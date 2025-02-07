@@ -11,3 +11,18 @@ select  c.company_code,c.founder,
 
 
 from  Company as c order by c.company_code;
+
+/*
+Enter your query here.
+start @6:54 am
+end @ 7:05 am
+*/
+
+select CONCAT(Name,"(",left(Occupation,1),")")
+from OCCUPATIONS order by name asc;
+
+select 
+concat("There are a total of ",count(Occupation)," ",lower(Occupation),'s.')
+from OCCUPATIONs
+group by Occupation
+order by count(Occupation)
