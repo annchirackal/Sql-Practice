@@ -26,3 +26,19 @@ concat("There are a total of ",count(Occupation)," ",lower(Occupation),'s.')
 from OCCUPATIONs
 group by Occupation
 order by count(Occupation)
+
+
+/*
+Enter your query here.
+Start @6:35 am
+end @ 6:50 am
+*/
+
+SELECT round(m.LAT_N ,4)
+FROM (
+    SELECT s1.LAT_N, 
+           ROW_NUMBER() OVER (ORDER BY s1.LAT_N) AS row_n, 
+           COUNT(*) OVER () AS total_rows
+    FROM STATION s1
+) m
+WHERE m.row_n = CEIL(m.total_rows / 2);
