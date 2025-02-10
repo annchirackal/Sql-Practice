@@ -42,3 +42,21 @@ FROM (
     FROM STATION s1
 ) m
 WHERE m.row_n = CEIL(m.total_rows / 2);
+
+/*
+Enter your query here.
+group_concat and recursive   - 
+*/
+WITH RECURSIVE Numbers(n) AS (
+    SELECT 2
+    UNION ALL
+    SELECT n + 1 FROM Numbers WHERE n < 1000  -- Change 1000 to your upper limit
+)
+SELECT GROUP_CONCAT(n SEPARATOR '&') 
+FROM Numbers
+WHERE NOT EXISTS (
+    SELECT 1 
+    FROM Numbers AS divs 
+    WHERE divs.n < Numbers.n AND divs.n > 1 
+    AND Numbers.n % divs.n = 0
+);
