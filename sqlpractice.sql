@@ -65,3 +65,23 @@ select
 round(SQRT( POWER( ( MAX(LAT_N) - MIN(LAT_N) ), 2 ) + POWER( ( MAX(LONG_W) - MIN(LONG_W) ),2 )
 ) ,4)
 FROM STATION;
+
+/*
+Enter your query here.
+start at 7 :00 AM 
+end at 7:30 AM
+*/
+
+
+SELECT 
+    CASE WHEN gd.Grade >= 8
+        THEN st.Name
+    END AS Names,
+    gd.Grade,
+    st.Marks
+FROM Students as st
+LEFT JOIN Grades gd
+ ON  st.Marks BETWEEN gd.Min_Mark AND gd.Max_Mark
+ ORDER BY gd.Grade DESC,
+ (CASE WHEN gd.Grade >= 8 THEN st.Name END) ASC,
+ (CASE WHEN gd.Grade < 8 THEN st.Marks END) ASC;
