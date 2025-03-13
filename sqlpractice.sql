@@ -91,3 +91,23 @@ select s.user_id,
 from Signups as s 
 left join Confirmations as c on s.user_id= c.user_id
  group by user_id;
+
+with date_diff as(
+  SELECT 
+        Task_ID, 
+        Start_Date, 
+        End_Date, 
+        DATEADD(day,-ROW_NUMBER() OVER (ORDER BY Start_Date)+1,Start_date) AS Project_Group
+    FROM Projects)
+    
+,result as(
+select min(Start_Date) start_date,
+max(End_Date) end_date,
+Project_Group,
+datediff(day,min(Start_Date),max(End_Date)) as date_diff
+from date_diff
+group by Project_Group)
+
+select start_date,end_date
+from result 
+order by date_diff asc ,start_date asc
