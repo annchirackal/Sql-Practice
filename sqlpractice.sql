@@ -118,3 +118,20 @@ SELECT DISTINCT p.candidate_id FROM candidates p
 inner join candidates t on t.candidate_id = p.candidate_id
 inner join candidates s on s.candidate_id = p.candidate_id
 where s.skill ='PostgreSQL' and t.skill = 'Tableau' and p.skill ='Python';
+
+with trades_count as (
+select
+u.city,
+count(t.order_id) as total_orders,
+rank() over( order by count(t.order_id) desc) as rank_val
+from trades t
+inner JOIN users u on u.user_id = t.user_id
+where status ='Completed'
+group by u.city
+
+)
+
+SELECT city,
+       total_orders
+from trades_count
+WHERE rank_val <=3 order by total_orders desc;
