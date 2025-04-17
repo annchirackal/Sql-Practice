@@ -111,3 +111,10 @@ group by Project_Group)
 select start_date,end_date
 from result 
 order by date_diff asc ,start_date asc
+
+
+------------------------
+SELECT DISTINCT p.candidate_id FROM candidates p
+inner join candidates t on t.candidate_id = p.candidate_id
+inner join candidates s on s.candidate_id = p.candidate_id
+where s.skill ='PostgreSQL' and t.skill = 'Tableau' and p.skill ='Python';
