@@ -135,3 +135,31 @@ SELECT city,
        total_orders
 from trades_count
 WHERE rank_val <=3 order by total_orders desc;
+
+
+-- create a cte for company slary
+-- agregate depaerment slary and compare with cte
+
+with company_average as
+(
+SELECT  to_char(payment_date,'MM-YYYY') as paydate,
+       avg(amount) as avg_salary
+from  salary 
+group by to_char(payment_date,'MM-YYYY')
+)
+
+SELECT 
+  department_id,
+  to_char(payment_date,'MM-YYYY') as payment_date,
+case WHEN avg(amount) > avg_salary then 'higher'
+     when avg(amount) <avg_salary then 'lower'
+     when avg(amount) = avg_salary then 'same'
+  end as  comparison
+from employee e
+inner join salary d 
+  on e.employee_id = d.employee_id
+inner join company_average ca
+   on paydate = to_char(payment_date,'MM-YYYY') 
+group by department_id, to_char(payment_date,'MM-YYYY'),avg_salary
+
+  
