@@ -160,6 +160,22 @@ inner join salary d
   on e.employee_id = d.employee_id
 inner join company_average ca
    on paydate = to_char(payment_date,'MM-YYYY') 
-group by department_id, to_char(payment_date,'MM-YYYY'),avg_salary
+group by department_id, to_char(payment_date,'MM-YYYY'),avg_salary;
+
+with user_count as (
+SELECT 
+user_id,
+count(tweet_id) as tweet_bucket
+from tweets where to_char(tweet_date,'YYYY') ='2022'
+group by user_id)
+
+SELECT
+tweet_bucket,
+count(user_id) as users_num
+from user_count
+group by tweet_bucket
+order by count(user_id) desc
+
+
 
   
