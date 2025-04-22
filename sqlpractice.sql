@@ -177,5 +177,20 @@ group by tweet_bucket
 order by count(user_id) desc
 
 
+SELECT 
+  age_bucket,
+  ROUND(SUM(CASE WHEN activity_type = 'open' THEN time_spent ELSE 0 END) * 100.0 
+        / NULLIF(SUM(time_spent), 0), 2) AS open_perc,
+  ROUND(SUM(CASE WHEN activity_type = 'send' THEN time_spent ELSE 0 END) * 100.0 
+        / NULLIF(SUM(time_spent), 0), 2) AS send_perc
+FROM 
+  age_breakdown a
+JOIN 
+  activities act ON act.user_id = a.user_id
+  where activity_type in ('open','send')
+GROUP BY 
+  age_bucket;
+
+
 
   
