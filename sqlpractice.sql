@@ -191,6 +191,10 @@ JOIN
 GROUP BY 
   age_bucket;
 
+SELECT ROUND(sum(item_count * order_occurrences)::numeric / sum(order_occurrences), 1)
+FROM items_per_order;
+
+
 
 
   
