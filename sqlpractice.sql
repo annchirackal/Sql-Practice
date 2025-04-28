@@ -195,6 +195,26 @@ SELECT ROUND(sum(item_count * order_occurrences)::numeric / sum(order_occurrence
 FROM items_per_order;
 
 
+with ranked_products as(
+SELECT 
+      category,
+      product,
+      sum(spend) as total_spend,
+      rank() over ( partition by category order by sum(spend) desc) as product_rank
+      from product_spend
+      where to_char(transaction_date,'YYYY') = '2022'
+      group by category , 
+                product
+      
+  )
+select 
+      category,
+      product,
+      total_spend
+
+from ranked_products where product_rank <=2
+
+
 
 
   
