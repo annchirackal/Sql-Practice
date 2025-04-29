@@ -212,7 +212,11 @@ select
       product,
       total_spend
 
-from ranked_products where product_rank <=2
+from ranked_products where product_rank <=2;
+
+SELECT sum(case when call_category is null or call_category ='n/a' then 1 end)::float/count(*)*100
+
+FROM callers
 
 
 
