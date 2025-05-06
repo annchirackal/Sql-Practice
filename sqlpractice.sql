@@ -216,9 +216,12 @@ from ranked_products where product_rank <=2;
 
 SELECT sum(case when call_category is null or call_category ='n/a' then 1 end)::float/count(*)*100
 
-FROM callers
+FROM callers;
 
-
+SELECT page_id
+FROM pages
+where page_id not in ( select DISTINCT page_id from page_likes)
+;
 
 
   
