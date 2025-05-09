@@ -245,4 +245,19 @@ rows BETWEEN 2 PRECEDING and current row
 ),2) as rolling_average
 from tweets;
 
+SELECT 
+  deals.employee_id,
+  CASE 
+    WHEN SUM(deals.deal_size) <= employee.quota 
+      THEN employee.base + (employee.commission * SUM(deals.deal_size)) -- #1
+    ELSE employee.base + (employee.commission * employee.quota) + 
+      ((SUM(deals.deal_size) - employee.quota) * employee.commission * employee.accelerator) -- #2
+  END AS total_compensation
+FROM deals
+INNER JOIN employee_contract AS employee
+  ON deals.employee_id = employee.employee_id
+GROUP BY deals.employee_id, employee.quota, employee.base, employee.commission, employee.accelerator
+ORDER BY total_compensation DESC, deals.employee_id;
+
+
   
