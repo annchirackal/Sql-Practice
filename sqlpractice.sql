@@ -237,6 +237,12 @@ sum (case when row_number:: int % 2  = 1 then measurement_value else 0 end ) as 
 sum (case when row_number :: int % 2  = 0 then measurement_value else 0 end) as even_sum
 from ordered_data
 group by date(measurement_time) 
-order by date(measurement_time)
+order by date(measurement_time);
+
+SELECT user_id,tweet_date,
+round(avg(tweet_count) over(partition by user_id  order by tweet_date
+rows BETWEEN 2 PRECEDING and current row
+),2) as rolling_average
+from tweets;
 
   
