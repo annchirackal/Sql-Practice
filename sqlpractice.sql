@@ -223,5 +223,20 @@ FROM pages
 where page_id not in ( select DISTINCT page_id from page_likes)
 ;
 
+with ordered_data as(
+SELECT measurement_value,measurement_time,
+row_number() over(PARTITION by date(measurement_time) order by measurement_time asc )
+from measurements
+)
+
+
+SELECT
+date(measurement_time)  measurement_day,
+sum (case when row_number:: int % 2  = 1 then measurement_value else 0 end ) as odd_sum,
+
+sum (case when row_number :: int % 2  = 0 then measurement_value else 0 end) as even_sum
+from ordered_data
+group by date(measurement_time) 
+order by date(measurement_time)
 
   
