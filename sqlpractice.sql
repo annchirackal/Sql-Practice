@@ -259,5 +259,20 @@ INNER JOIN employee_contract AS employee
 GROUP BY deals.employee_id, employee.quota, employee.base, employee.commission, employee.accelerator
 ORDER BY total_compensation DESC, deals.employee_id;
 
+with ranked_transaction as(
+SELECT 
+USER_id ,
+spend,
+transaction_date,
+rank() over(PARTITION by user_id order by transaction_date asc) as rank_users
+
+
+FROM transactions)
+
+SELECT USER_id ,
+spend,
+transaction_date
+from ranked_transaction where rank_users =3
+
 
   
