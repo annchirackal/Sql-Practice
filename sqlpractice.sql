@@ -305,6 +305,8 @@ SELECT
 FROM dept_avg AS d
 INNER JOIN company_avg AS c
   ON d.payment_date = c.payment_date;
+
+SELECT part,assembly_step FROM parts_assembly where finish_date is null;
   
 
 
