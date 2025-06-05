@@ -307,6 +307,26 @@ INNER JOIN company_avg AS c
   ON d.payment_date = c.payment_date;
 
 SELECT part,assembly_step FROM parts_assembly where finish_date is null;
+--- get all user_id from emails -- join with text to get only confirmed emails 
+---- where siup_action = comfirmed 
+
+with joined_data as (
+select user_id ,
+text_id,
+signup_action
+from emails e
+left join texts T 
+
+on t.email_id = e.email_id
+
+)
+
+select 
+ ROUND(
+    (SUM(CASE WHEN signup_action = 'Confirmed' THEN 1 ELSE 0 END)::float 
+     / COUNT(DISTINCT user_id)::float)::numeric, 
+    2)
+from joined_data;
   
 
 
