@@ -327,7 +327,8 @@ select
      / COUNT(DISTINCT user_id)::float)::numeric, 
     2)
 from joined_data;
-  
+
+SELECT max(salary) from employee where salary <(select max(salary) from employee );
 
 
   
